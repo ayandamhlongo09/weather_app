@@ -1,0 +1,5 @@
+{
+    "appName" : "DVT Weather App",
+    "weatherApiBaseUrl": "https://api.openweathermap.org/data/2.5/",
+    "weatherApiKey": "a55dd497d4e0b246273545df378ef9b2"
+}
