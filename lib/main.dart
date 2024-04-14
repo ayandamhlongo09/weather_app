@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/router/router.dart';
+import 'package:weather_app/utils/app_providers.dart';
+import 'package:weather_app/utils/service_locator.dart';
+import 'package:weather_app/values/colors.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GlobalConfiguration().loadFromAsset("app_settings");
+  registerServices();
   runApp(const MyApp());
 }
 
@@ -9,32 +18,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return MultiProvider(
+      providers: appProviders,
+      child: MaterialApp.router(
+        title: GlobalConfiguration().getValue<String>('appName'),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blue),
+          useMaterial3: true,
+        ),
+        routeInformationProvider: AppRoutes.router.routeInformationProvider,
+        routeInformationParser: AppRoutes.router.routeInformationParser,
+        routerDelegate: AppRoutes.router.routerDelegate,
       ),
     );
   }
