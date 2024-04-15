@@ -1,17 +1,19 @@
 # weather_app
 
-A new Flutter project.
+This is a weather application provides users with real-time weather information as well as a 5-day forecast
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Today's Weather Info: Displays today's weather conditions including minimum and maximum temperatures,
+- 5-Day Forecast: Provide users with a 5-day forecast showing the expected weather conditions over the upcoming days.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Navigate to the project directory.
+2. Run `flutter pub get` to install dependencies.
+3. Connect to a device or emulator.
+4. Run the app using `flutter run`.
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-# weather_app
+
+# weather-app

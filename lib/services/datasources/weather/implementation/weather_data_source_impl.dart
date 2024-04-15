@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:geolocator/geolocator.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:weather_app/models/forecast_weather_result.dart';
+import 'package:weather_app/models/location_coordinates.dart';
 import 'package:weather_app/services/core/geolocating/geolocating.dart';
 import 'package:weather_app/helpers/exceptions/network_exceptions.dart';
 import 'package:weather_app/models/current_weather_result.dart';
@@ -18,12 +18,11 @@ class WeatherDataSourceImpl implements WeatherDataSource {
 
   @override
   Future<CurrentWeatherResult> getCurrentWeather() async {
-    Position position = await geolocating.getCurrentLocation;
-
+    LocationCoordinates coordinates = await geolocating.getLatLongCordinates;
     var client = HttpClient();
     final url = Uri.parse('${GlobalConfiguration().getValue<String>('weatherApiBaseUrl')}weather').replace(queryParameters: {
-      'lat': position.latitude.toString(),
-      'lon': position.longitude.toString(),
+      'lat': coordinates.latitude.toString(),
+      'lon': coordinates.longitude.toString(),
       'appid': GlobalConfiguration().getValue<String>('weatherApiKey'),
     });
 
@@ -46,11 +45,12 @@ class WeatherDataSourceImpl implements WeatherDataSource {
 
   @override
   Future<ForecastWeatherResult> get5DayForecast() async {
-    Position position = await geolocating.getCurrentLocation;
+    LocationCoordinates coordinates = await geolocating.getLatLongCordinates;
+
     var client = HttpClient();
     final url = Uri.parse('${GlobalConfiguration().getValue<String>('weatherApiBaseUrl')}forecast').replace(queryParameters: {
-      'lat': position.latitude.toString(),
-      'lon': position.longitude.toString(),
+      'lat': coordinates.latitude.toString(),
+      'lon': coordinates.longitude.toString(),
       'appid': GlobalConfiguration().getValue<String>('weatherApiKey'),
     });
 
@@ -60,20 +60,15 @@ class WeatherDataSourceImpl implements WeatherDataSource {
       if (response.statusCode == HttpStatus.ok) {
         final responseBody = await response.transform(utf8.decoder).join();
         print(responseBody);
-        // Parse the response into ForecasttWeatherResult
         var forecastResult = ForecastWeatherResult.fromRawJson(responseBody);
-        // Filter the forecast list to get only the first 3 hours for each day
         var filteredForecast = forecastResult.filterFirst3Hours();
-        // Update the forecast list in the result object
         forecastResult.list = filteredForecast;
         return forecastResult;
       } else {
-        // Handle error response
         print('Failed with status code: ${response.statusCode}');
         throw NetworkErrorException();
       }
     } catch (e) {
-      // Handle network errors
       print('Error fetching data: $e');
       throw NetworkErrorException();
     } finally {

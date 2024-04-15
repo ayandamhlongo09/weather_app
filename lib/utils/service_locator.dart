@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:huawei_location/huawei_location.dart';
 import 'package:weather_app/services/core/geolocating/geolocating.dart';
 import 'package:weather_app/services/core/geolocating/implementations/geolocating_impl.dart';
 import 'package:weather_app/services/datasources/weather/implementation/weather_data_source_impl.dart';
@@ -20,7 +21,7 @@ void registerServices() {
 
   // START REGISTRATION
 
-  serviceLocator.registerSingleton<Geolocating>(geolocating);
+  // serviceLocator.registerSingleton<Geolocating>(geolocating);
 
   // datasources
   serviceLocator.registerSingleton<WeatherDataSource>(weatherDataSource);

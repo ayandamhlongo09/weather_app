@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:weather_app/models/location_coordinates.dart';
+
 abstract class Geolocating {
-  Future get getCurrentLocation;
+  Future<LocationCoordinates> get getLatLongCordinates;
+
   Future<void> dispose();
 }

@@ -20,7 +20,7 @@ class WeatherViewModel extends ChangeNotifier {
   }) : _repository = repository {
     init();
   }
-  
+
   Future<void> init() async {
     await getCurrentWeather();
     await get5DayForecast();

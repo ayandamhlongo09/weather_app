@@ -144,7 +144,6 @@ class _HomePageState extends State<HomePage> {
         ListView.builder(
           shrinkWrap: true,
           itemCount: viewModel.forecastWeatherResult?.list.length,
-          // physics: const ScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               minLeadingWidth: MediaQuery.of(context).size.width * 0.38,
