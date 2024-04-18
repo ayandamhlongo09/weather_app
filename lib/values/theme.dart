@@ -1,23 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/values/colors.dart';
+import 'package:weather_app/values/images.dart';
 
-class MyTextStyles {
-  static TextStyle? primaryText1({
-    Color color = AppColors.white,
-    FontWeight fontWeight = FontWeight.w700,
-    double fontSize = 14,
-    FontStyle fontStyle = FontStyle.normal,
-    TextDecoration decoration = TextDecoration.none,
-  }) {
-    return TextStyle(
-      fontSize: fontSize,
-      color: color,
-      fontWeight: fontWeight,
-      fontStyle: fontStyle,
-      decoration: decoration,
-    );
-  }
+class WeatherTheme {
+  final String name;
+  final String sunnyImage;
+  final String cloudyImage;
+  final String rainyImage;
+
+  WeatherTheme({
+    required this.name,
+    required this.sunnyImage,
+    required this.cloudyImage,
+    required this.rainyImage,
+  });
 }
+
+List<WeatherTheme> themes = [
+  WeatherTheme(
+    name: 'Forest',
+    sunnyImage: AppImages.forestSunny,
+    cloudyImage: AppImages.forestCloudy,
+    rainyImage: AppImages.forestRainy,
+  ),
+  WeatherTheme(
+    name: 'Sea',
+    sunnyImage: AppImages.seaSunny,
+    cloudyImage: AppImages.seaCloudy,
+    rainyImage: AppImages.seaRainy,
+  ),
+ 
+];
+
 
 class CustomTheme {
   CustomTheme();

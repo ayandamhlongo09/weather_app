@@ -1,4 +1,4 @@
-class ImagePath {
+class AppImages {
   static const String imageDir = "assets/images";
 
 //Sea Design
