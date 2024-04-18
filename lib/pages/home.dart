@@ -69,6 +69,49 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  AssetImage getClearIconPath({
+    required BuildContext context,
+    required WeatherTypes weatherType,
+  }) {
+    double pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    String? iconName;
+
+    switch (weatherType) {
+      case WeatherTypes.sunny:
+        if (pixelRatio < 1) {
+          iconName = AppIcons.sunny;
+        } else if (pixelRatio < 2) {
+          iconName = AppIcons.sunny2x;
+        } else {
+          iconName = AppIcons.sunny3x;
+        }
+        break;
+      case WeatherTypes.cloudy:
+        if (pixelRatio < 1) {
+          iconName = AppIcons.cloudy;
+        } else if (pixelRatio < 2) {
+          iconName = AppIcons.cloudy2x;
+        } else {
+          iconName = AppIcons.cloudy3x;
+        }
+        break;
+      case WeatherTypes.rainy:
+        if (pixelRatio < 1) {
+          iconName = AppIcons.rain;
+        } else if (pixelRatio < 2) {
+          iconName = AppIcons.rain2x;
+        } else {
+          iconName = AppIcons.rain3x;
+        }
+        break;
+      default:
+        iconName = AppIcons.cloudy3x;
+        break;
+    }
+
+    return AssetImage(iconName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +123,7 @@ class _HomePageState extends State<HomePage> {
             LoadingStatus.busy: (BuildContext context) => const LoadingWidget(),
             LoadingStatus.failed: (BuildContext context) => const NoDataWidget(message: 'No weather data available'),
             LoadingStatus.idle: (BuildContext context) => const LoadingWidget(),
-            LoadingStatus.completed: (BuildContext context) => weatherView(viewModel: viewModel),
+            LoadingStatus.completed: (BuildContext context) => weatherView(context: context, viewModel: viewModel),
           },
           fallbackBuilder: (BuildContext context) => const SizedBox(),
         );
@@ -88,7 +131,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget weatherView({required WeatherViewModel viewModel}) {
+  Widget weatherView({required BuildContext context, required WeatherViewModel viewModel}) {
     return Container(
       color: getScaffoldBackgroundColor(
           selectedTheme: selectedTheme, weatherType: interpretWeatherType(viewModel.currentWeatherResult!.weather[0].main)),
@@ -208,10 +251,10 @@ class _HomePageState extends State<HomePage> {
                 title: Container(
                   width: double.infinity,
                   height: 30,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     image: DecorationImage(
                       alignment: Alignment.centerLeft,
-                      image: AssetImage(AppIcons.clear3x),
+                      image: getClearIconPath(context: context, weatherType: interpretWeatherType(viewModel.currentWeatherResult!.weather[0].main)),
                       fit: BoxFit.contain,
                     ),
                   ),
