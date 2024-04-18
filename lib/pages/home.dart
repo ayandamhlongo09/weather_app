@@ -6,11 +6,13 @@ import 'package:weather_app/components/loading_widget.dart';
 import 'package:weather_app/components/no_data_widget.dart';
 import 'package:weather_app/helpers/string_extension.dart';
 import 'package:weather_app/helpers/weather_type_interpreter.dart';
+import 'package:weather_app/models/favorite_locations.dart';
 import 'package:weather_app/utils/enums.dart';
 import 'package:weather_app/utils/notifier_state.dart';
 import 'package:weather_app/values/colors.dart';
 import 'package:weather_app/values/icons.dart';
 import 'package:weather_app/values/theme.dart';
+import 'package:weather_app/viewmodels/favorites_viewmodel.dart';
 import 'package:weather_app/viewmodels/weather_viewmodel.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +25,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final CustomTheme theme = CustomTheme();
   WeatherTheme selectedTheme = themes.first;
+  bool isFavorite = false;
 
   Widget getBackGroundImage({
     required WeatherTheme selectedTheme,
@@ -115,15 +118,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<WeatherViewModel>(builder: (BuildContext context, WeatherViewModel viewModel, _) {
+      body: Consumer2<WeatherViewModel, FavoritesViewModel>(
+          builder: (BuildContext context, WeatherViewModel weatherViewModel, FavoritesViewModel favoritesViewModel, _) {
         return ConditionalSwitch.single<LoadingStatus>(
           context: context,
-          valueBuilder: (BuildContext context) => viewModel.status,
+          valueBuilder: (BuildContext context) => weatherViewModel.status,
           caseBuilders: {
             LoadingStatus.busy: (BuildContext context) => const LoadingWidget(),
             LoadingStatus.failed: (BuildContext context) => const NoDataWidget(message: 'No weather data available'),
             LoadingStatus.idle: (BuildContext context) => const LoadingWidget(),
-            LoadingStatus.completed: (BuildContext context) => weatherView(context: context, viewModel: viewModel),
+            LoadingStatus.completed: (BuildContext context) =>
+                weatherView(context: context, weatherViewModel: weatherViewModel, favoritesViewModel: favoritesViewModel),
           },
           fallbackBuilder: (BuildContext context) => const SizedBox(),
         );
@@ -131,10 +136,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget weatherView({required BuildContext context, required WeatherViewModel viewModel}) {
+  Widget weatherView({required BuildContext context, required WeatherViewModel weatherViewModel, required FavoritesViewModel favoritesViewModel}) {
     return Container(
       color: getScaffoldBackgroundColor(
-          selectedTheme: selectedTheme, weatherType: interpretWeatherType(viewModel.currentWeatherResult!.weather[0].main)),
+          selectedTheme: selectedTheme, weatherType: interpretWeatherType(weatherViewModel.currentWeatherResult!.weather[0].main)),
       child: Column(
         children: [
           Expanded(
@@ -146,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                     Stack(
                       children: [
                         getBackGroundImage(
-                            selectedTheme: selectedTheme, weatherType: interpretWeatherType(viewModel.currentWeatherResult!.weather[0].main)),
+                            selectedTheme: selectedTheme, weatherType: interpretWeatherType(weatherViewModel.currentWeatherResult!.weather[0].main)),
                         Positioned(
                           top: MediaQuery.of(context).size.height / 8,
                           left: MediaQuery.of(context).size.width / 3,
@@ -154,16 +159,44 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               DegreesCelsiusValue(
-                                value: viewModel.currentWeatherResult!.main.temp,
+                                value: weatherViewModel.currentWeatherResult!.main.temp,
                                 textStyle: theme.getCurrentWeatherText,
                               ),
                               Text(
-                                viewModel.currentWeatherResult!.weather[0].main,
+                                weatherViewModel.currentWeatherResult!.weather[0].main,
                                 style: theme.getCurrentWeatherText.copyWith(
                                   fontSize: 45,
                                 ),
                               ),
                             ],
+                          ),
+                        ),
+                        Positioned(
+                          top: 20,
+                          left: 20,
+                          child: IconButton(
+                            icon: Icon(
+                              AppIcons.favorite,
+                              color: isFavorite ? AppColors.red : AppColors.grey,
+                            ),
+                            onPressed: () {
+                              FavoriteLocations location = FavoriteLocations(
+                                  cityName: weatherViewModel.currentWeatherResult!.name,
+                                  countryCode: weatherViewModel.currentWeatherResult!.sys.country!);
+                              favoritesViewModel.addNewLocation(location: location);
+                              setState(() {
+                                isFavorite = !isFavorite;
+                              });
+
+                              final message = isFavorite ? 'Location added to favorites' : 'Location removed from favorites';
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(message),
+                                  duration: const Duration(seconds: 3),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         Positioned(
@@ -198,13 +231,13 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 DegreesCelsiusValue(
-                                  value: viewModel.currentWeatherResult!.main.tempMin,
+                                  value: weatherViewModel.currentWeatherResult!.main.tempMin,
                                 ),
                                 DegreesCelsiusValue(
-                                  value: viewModel.currentWeatherResult!.main.temp,
+                                  value: weatherViewModel.currentWeatherResult!.main.temp,
                                 ),
                                 DegreesCelsiusValue(
-                                  value: viewModel.currentWeatherResult!.main.tempMax,
+                                  value: weatherViewModel.currentWeatherResult!.main.tempMax,
                                 ),
                               ],
                             ),
@@ -238,12 +271,12 @@ class _HomePageState extends State<HomePage> {
               )),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: viewModel.forecastWeatherResult?.list.length,
+            itemCount: weatherViewModel.forecastWeatherResult?.list.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 minLeadingWidth: MediaQuery.of(context).size.width * 0.38,
                 leading: Text(
-                  (viewModel.forecastWeatherResult!.list[index].dtTxt).toString().formatDateToWeekDay,
+                  (weatherViewModel.forecastWeatherResult!.list[index].dtTxt).toString().formatDateToWeekDay,
                   style: theme.getPrimaryText.copyWith(
                     fontSize: 18,
                   ),
@@ -254,12 +287,13 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       alignment: Alignment.centerLeft,
-                      image: getClearIconPath(context: context, weatherType: interpretWeatherType(viewModel.currentWeatherResult!.weather[0].main)),
+                      image: getClearIconPath(
+                          context: context, weatherType: interpretWeatherType(weatherViewModel.currentWeatherResult!.weather[0].main)),
                       fit: BoxFit.contain,
                     ),
                   ),
                 ),
-                trailing: DegreesCelsiusValue(value: viewModel.forecastWeatherResult!.list[index].main.tempMax),
+                trailing: DegreesCelsiusValue(value: weatherViewModel.forecastWeatherResult!.list[index].main.tempMax),
               );
             },
           ),

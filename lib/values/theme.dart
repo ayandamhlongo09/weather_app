@@ -29,9 +29,7 @@ List<WeatherTheme> themes = [
     cloudyImage: AppImages.seaCloudy,
     rainyImage: AppImages.seaRainy,
   ),
- 
 ];
-
 
 class CustomTheme {
   CustomTheme();

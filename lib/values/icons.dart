@@ -21,4 +21,5 @@ class AppIcons {
   //Bottom Naviagtion Icons
   static const Icon home = Icon(Icons.home);
   static const Icon favorites = Icon(Icons.favorite);
+  static const IconData favorite = IconData(0xe25b, fontFamily: 'MaterialIcons');
 }
