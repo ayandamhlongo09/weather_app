@@ -12,7 +12,10 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
   @override
   Future<List<FavoriteLocations>> getFavoriteLocations() async {
     final result = await localStorageDataSource.getFavoriteLocations();
-    final List<dynamic> jsonList = json.decode(result ?? "");
+    if (result == null || result.isEmpty) {
+      return [];
+    }
+    final List<dynamic> jsonList = json.decode(result);
     final List<FavoriteLocations> favoriteLocationsList = jsonList.map((json) => FavoriteLocations.fromJson(json)).toList();
     return favoriteLocationsList;
   }
