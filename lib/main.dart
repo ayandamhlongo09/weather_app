@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/router/router.dart';
 import 'package:weather_app/utils/app_providers.dart';
 import 'package:weather_app/utils/service_locator.dart';
-import 'package:weather_app/values/colors.dart';
+import 'package:weather_app/utils/values/colors.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:weather_app/pages/favorites.dart';
 import 'package:weather_app/pages/home.dart';
-import 'package:weather_app/values/colors.dart';
-import 'package:weather_app/values/icons.dart';
+import 'package:weather_app/utils/values/colors.dart';
+import 'package:weather_app/utils/values/icons.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});

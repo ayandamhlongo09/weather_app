@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/values/colors.dart';
-import 'package:weather_app/values/images.dart';
+import 'package:weather_app/utils/values/colors.dart';
+import 'package:weather_app/utils/values/images.dart';
 
 class WeatherTheme {
   final String name;

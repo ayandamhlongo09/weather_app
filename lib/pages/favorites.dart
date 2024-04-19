@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_conditional_rendering/conditional_switch.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:weather_app/components/loading_widget.dart';
 import 'package:weather_app/components/no_data_widget.dart';
-import 'package:weather_app/utils/notifier_state.dart';
-import 'package:weather_app/values/colors.dart';
-import 'package:weather_app/values/icons.dart';
-import 'package:weather_app/values/theme.dart';
+import 'package:weather_app/utils/enums.dart';
+import 'package:weather_app/utils/values/colors.dart';
+import 'package:weather_app/utils/values/icons.dart';
+import 'package:weather_app/utils/values/theme.dart';
 import 'package:weather_app/viewmodels/favorites_viewmodel.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -31,9 +30,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           context: context,
           valueBuilder: (BuildContext context) => favoritesViewModel.status,
           caseBuilders: {
-            LoadingStatus.busy: (BuildContext context) => const LoadingWidget(
-                  color: AppColors.blue,
-                ),
+            LoadingStatus.busy: (BuildContext context) => const LoadingWidget(),
             LoadingStatus.failed: (BuildContext context) => const NoDataWidget(message: 'No saved favorite locations'),
             LoadingStatus.idle: (BuildContext context) => const LoadingWidget(),
             LoadingStatus.completed: (BuildContext context) => favoritesList(context: context, favoritesViewModel: favoritesViewModel),
@@ -68,7 +65,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           favoritesViewModel.getPlaceDetails(favoritesViewModel.favoriteLocations[index]).then((value) => showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertDialog(
+                                  return  
+                                  
+                                  
+                                  AlertDialog(
                                     title: Text(
                                       favoritesViewModel.details!.candidates[0].formattedAddress,
                                       style: const TextStyle(fontSize: 20),

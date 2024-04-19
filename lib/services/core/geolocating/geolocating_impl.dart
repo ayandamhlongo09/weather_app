@@ -6,7 +6,7 @@ import 'package:google_huawei_availability/google_huawei_availability.dart';
 import 'package:huawei_location/huawei_location.dart';
 import 'package:weather_app/models/location_coordinates.dart';
 import 'package:weather_app/services/core/geolocating/geolocating.dart';
-import 'package:weather_app/helpers/exceptions/network_exceptions.dart';
+import 'package:weather_app/helpers/exceptions.dart';
 
 class GeolocatingImpl implements Geolocating {
   Future<Position> _getCurrentGoogleLocation() async {

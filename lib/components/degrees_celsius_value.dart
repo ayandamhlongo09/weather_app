@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/helpers/temperature_converter.dart';
-import 'package:weather_app/values/theme.dart';
+import 'package:weather_app/utils/values/theme.dart';
 
 class DegreesCelsiusValue extends StatelessWidget {
   DegreesCelsiusValue({

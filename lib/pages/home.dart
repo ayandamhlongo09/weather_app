@@ -8,10 +8,9 @@ import 'package:weather_app/helpers/string_extension.dart';
 import 'package:weather_app/helpers/weather_type_interpreter.dart';
 import 'package:weather_app/models/favorite_locations.dart';
 import 'package:weather_app/utils/enums.dart';
-import 'package:weather_app/utils/notifier_state.dart';
-import 'package:weather_app/values/colors.dart';
-import 'package:weather_app/values/icons.dart';
-import 'package:weather_app/values/theme.dart';
+import 'package:weather_app/utils/values/colors.dart';
+import 'package:weather_app/utils/values/icons.dart';
+import 'package:weather_app/utils/values/theme.dart';
 import 'package:weather_app/viewmodels/favorites_viewmodel.dart';
 import 'package:weather_app/viewmodels/weather_viewmodel.dart';
 
@@ -126,9 +125,7 @@ class _HomePageState extends State<HomePage> {
           caseBuilders: {
             LoadingStatus.busy: (BuildContext context) => const LoadingWidget(),
             LoadingStatus.failed: (BuildContext context) => const NoDataWidget(message: 'No weather data available'),
-            LoadingStatus.idle: (BuildContext context) => const LoadingWidget(
-                  color: AppColors.blue,
-                ),
+            LoadingStatus.idle: (BuildContext context) => const LoadingWidget(),
             LoadingStatus.completed: (BuildContext context) =>
                 weatherView(context: context, weatherViewModel: weatherViewModel, favoritesViewModel: favoritesViewModel),
           },

@@ -5,7 +5,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:weather_app/models/forecast_weather_result.dart';
 import 'package:weather_app/models/location_coordinates.dart';
 import 'package:weather_app/services/core/geolocating/geolocating.dart';
-import 'package:weather_app/helpers/exceptions/network_exceptions.dart';
+import 'package:weather_app/helpers/exceptions.dart';
 import 'package:weather_app/models/current_weather_result.dart';
 
 import '../weather_data_source.dart';

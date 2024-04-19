@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/helpers/exceptions/network_exceptions.dart';
+import 'package:weather_app/helpers/exceptions.dart';
 import 'package:weather_app/models/favorite_locations.dart';
 import 'package:weather_app/models/place_details.dart';
 import 'package:weather_app/services/repositories/places/places_repository.dart';
 import 'package:weather_app/services/repositories/storage/local_storage_repository.dart';
-import 'package:weather_app/utils/notifier_state.dart';
+import 'package:weather_app/utils/enums.dart';
 
 class FavoritesViewModel extends ChangeNotifier {
   final LocalStorageRepository _localStorageRepository;
@@ -85,6 +85,7 @@ class FavoritesViewModel extends ChangeNotifier {
       // notifyListeners();
       _details = await _placesRepository.getPlaceDetails(location);
       _status = LoadingStatus.completed;
+      // notifyListeners();
     } on ErrorResponseException catch (_) {}
   }
 
@@ -98,7 +99,4 @@ class FavoritesViewModel extends ChangeNotifier {
   LoadingStatus get status => _status;
   List<FavoriteLocations> get favoriteLocations => _favoriteLocations;
   PlaceDetails? get details => _details;
-  // set setDetails(LoadingStatus value) {
-  //   _status = value;
-  // }
 }

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:weather_app/models/favorite_locations.dart';
 import 'package:weather_app/models/place_details.dart';
-import 'package:weather_app/helpers/exceptions/network_exceptions.dart';
+import 'package:weather_app/helpers/exceptions.dart';
 import 'package:weather_app/services/datasources/places/places_data_source.dart';
 
 class PlacesDataSourceImpl implements PlacesDataSource {
