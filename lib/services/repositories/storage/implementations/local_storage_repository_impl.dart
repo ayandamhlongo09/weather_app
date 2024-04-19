@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:weather_app/models/favorite_locations.dart';
-import 'package:weather_app/services/datasources/favorites/local_storage_data_source.dart';
+import 'package:weather_app/services/datasources/storage/local_storage_data_source.dart';
 import 'package:weather_app/services/repositories/storage/local_storage_repository.dart';
 
 class LocalStorageRepositoryImpl implements LocalStorageRepository {

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/values/colors.dart';
 
 class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({super.key});
+  final Color? color;
+
+  const LoadingWidget({super.key, this.color});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+        valueColor: AlwaysStoppedAnimation<Color>(color ?? AppColors.white),
       ),
     );
   }

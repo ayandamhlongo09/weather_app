@@ -1,5 +1,5 @@
 import 'package:weather_app/services/core/storage/local_storage.dart';
-import 'package:weather_app/services/datasources/favorites/local_storage_data_source.dart';
+import 'package:weather_app/services/datasources/storage/local_storage_data_source.dart';
 
 class LocalStorageDataSourceImpl extends LocalStorageDataSource {
   static const String _keyFavoriteLocations = 'favorite_locations';

@@ -177,19 +177,29 @@ class _HomePageState extends State<HomePage> {
                           child: IconButton(
                             icon: Icon(
                               AppIcons.favorite,
-                              color: isFavorite ? AppColors.red : AppColors.grey,
+                              color: favoritesViewModel.isLocationFavorited(FavoriteLocations(
+                                      cityName: weatherViewModel.currentWeatherResult!.name,
+                                      countryCode: weatherViewModel.currentWeatherResult!.sys.country!))
+                                  ? AppColors.red
+                                  : AppColors.grey,
                             ),
                             onPressed: () {
                               FavoriteLocations location = FavoriteLocations(
                                   cityName: weatherViewModel.currentWeatherResult!.name,
                                   countryCode: weatherViewModel.currentWeatherResult!.sys.country!);
-                              favoritesViewModel.addNewLocation(location: location);
+
+                              final isAlreadyFavorited = favoritesViewModel.isLocationFavorited(location);
+                              if (isAlreadyFavorited) {
+                                favoritesViewModel.removeFavoriteLocations(location: location);
+                              } else {
+                                favoritesViewModel.addNewFavoriteLocation(location: location);
+                              }
+
                               setState(() {
-                                isFavorite = !isFavorite;
+                                isFavorite = !isAlreadyFavorited;
                               });
 
-                              final message = isFavorite ? 'Location added to favorites' : 'Location removed from favorites';
-
+                              final message = isAlreadyFavorited ? 'Location removed from favorites' : 'Location added to favorites';
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(message),
