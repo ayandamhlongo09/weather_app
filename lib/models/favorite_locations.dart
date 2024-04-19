@@ -13,4 +13,14 @@ class FavoriteLocations {
         "cityName": cityName,
         "countryCode": countryCode,
       };
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is FavoriteLocations && other.cityName == cityName && other.countryCode == countryCode;
+  }
+
+  @override
+  int get hashCode => cityName.hashCode ^ countryCode.hashCode;
 }
